@@ -9,17 +9,17 @@ public class DBConnection {
     private static java.sql.Connection connection;
     private static final String USER = "Yana";
     private static final String PASSWORD = "yana12345";
-    private static final String URL = "jdbc:mysql://localhost:3306/bank?useUnicode=yes&useSSL=false";
+    private static final String URL = "jdbc:mysql://localhost:3306/BANK?useUnicode=yes&useSSL=false";
 
     public static boolean createConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement stmt = connection.prepareStatement("DROP DATABASE IF EXISTS Bank");
+            PreparedStatement stmt = connection.prepareStatement("DROP DATABASE IF EXISTS BANK");
             stmt.execute();
-            stmt = connection.prepareStatement("CREATE DATABASE Bank");
+            stmt = connection.prepareStatement("CREATE DATABASE BANK");
             stmt.execute();
-            stmt = connection.prepareStatement("USE Bank");
+            stmt = connection.prepareStatement("USE BANK");
             stmt.execute();
             return true;
         } catch (ClassNotFoundException | SQLException e) {
@@ -41,7 +41,7 @@ public class DBConnection {
     }
 
     public static boolean createTables() {
-        String userTable = "CREATE TABLE User " +
+        String userTable = "CREATE TABLE user " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "login VARCHAR(100) NOT NULL, " +
                 "password VARCHAR(100) NOT NULL, " +
@@ -49,14 +49,14 @@ public class DBConnection {
                 "phone VARCHAR(100) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
-        String accountTable = "CREATE TABLE Account " +
+        String accountTable = "CREATE TABLE account " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "client_id VARCHAR(100) NOT NULL, " +
                 "amount DECIMAL(100) NOT NULL, " +
                 "acc_code VARCHAR(3) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
-        String operationTable = "CREATE TABLE Operation " +
+        String operationTable = "CREATE TABLE operation " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "date VARCHAR(100) NOT NULL, " +
                 "currency VARCHAR(3) NOT NULL, " +
