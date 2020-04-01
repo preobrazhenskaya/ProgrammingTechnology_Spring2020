@@ -7,11 +7,11 @@ public class Account {
     private UUID id;
     private UUID clientId;
     private BigDecimal amount;
-    private AccCode accCode;
+    private CurrencyCode accCode;
 
-    public Account () { }
+    public Account() { }
 
-    public Account (UUID id, UUID clientId, BigDecimal amount, AccCode accCode) {
+    public Account(UUID id, UUID clientId, BigDecimal amount, CurrencyCode accCode) {
         this.id = id;
         this.clientId = clientId;
         this.amount = amount;
@@ -42,11 +42,11 @@ public class Account {
         this.amount = amount;
     }
 
-    public AccCode getAccCode() {
+    public CurrencyCode getAccCode() {
         return accCode;
     }
 
-    public void setAccCode(AccCode accCode) {
+    public void setAccCode(CurrencyCode accCode) {
         this.accCode = accCode;
     }
 }

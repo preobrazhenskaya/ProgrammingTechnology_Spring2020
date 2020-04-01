@@ -9,7 +9,7 @@ public class User {
     private String address;
     private String phone;
 
-    public User () { }
+    public User() { }
 
     public User(UUID id, String login, String password, String address, String phone) {
         this.id = id;

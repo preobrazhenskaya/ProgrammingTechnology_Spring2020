@@ -1,6 +1,6 @@
 package Models;
 
-public enum AccCode {
+public enum CurrencyCode {
     RUB,
     EUR,
     USD;
