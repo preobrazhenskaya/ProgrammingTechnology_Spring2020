@@ -19,7 +19,6 @@ public class UserRepo {
         st.setString(5, user.getPhone());
 
         st.execute();
-        st.close();
     }
 
     public void deleteUser(User user) throws SQLException {
@@ -30,7 +29,6 @@ public class UserRepo {
         st.setString(1, user.getId().toString());
 
         st.executeUpdate();
-        st.close();
     }
 
     public void updateUser(User user) throws SQLException {
@@ -45,7 +43,6 @@ public class UserRepo {
         st.setString(5, user.getId().toString());
 
         st.executeUpdate();
-        st.close();
     }
 
     public User getUserById(UUID id) throws SQLException {
@@ -56,7 +53,6 @@ public class UserRepo {
         st.setString(1, id.toString());
 
         ResultSet rs = st.executeQuery();
-        st.close();
 
         if(rs.next()) {
             String login = rs.getString("login");
@@ -77,7 +73,6 @@ public class UserRepo {
         st.setString(1, login);
 
         ResultSet rs = st.executeQuery();
-        st.close();
 
         if(rs.next()) {
             UUID id = UUID.fromString(rs.getString("id"));
@@ -98,7 +93,6 @@ public class UserRepo {
         st.setString(1, phone);
 
         ResultSet rs = st.executeQuery();
-        st.close();
 
         if(rs.next()) {
             UUID id = UUID.fromString(rs.getString("id"));

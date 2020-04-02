@@ -10,7 +10,6 @@ import Services.AccountService;
 import Services.UserService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -37,7 +36,7 @@ public class CLI {
 
     private void positiveMessage(String message) {
         System.out.println();
-        System.out.print("Congratulations! " + message);
+        System.out.println("Congratulations! " + message);
     }
 
     private void negativeMessage() {
@@ -45,14 +44,19 @@ public class CLI {
         System.out.println("Oops! Something wrong.");
     }
 
+    private void yourChoiceMessage() {
+        System.out.println();
+        System.out.print("Your choice: ");
+    }
+
     private void mainMenu() {
+        System.out.println();
+        System.out.println("=== MAIN MENU ===");
         System.out.println("1 : Registration");
         System.out.println("2 : Log in");
         System.out.println("other : exit");
-        System.out.println();
-        System.out.print("Your choice: ");
+        yourChoiceMessage();
         int k = in.nextInt();
-        System.out.println();
         switch (k) {
             case 1:
                 registration();
@@ -67,7 +71,8 @@ public class CLI {
     }
 
     private void registration() {
-        System.out.print("=== REGISTRATION ===");
+        System.out.println();
+        System.out.println("=== REGISTRATION ===");
         System.out.print("Enter login: ");
         String login = in.next();
         System.out.print("Enter password: ");
@@ -87,11 +92,12 @@ public class CLI {
     }
 
     private void loginMenu() {
+        System.out.println();
         System.out.println("=== LOG IN ===");
         System.out.println("1 : Log in by login");
         System.out.println("2 : Log in by phone");
         System.out.println("other : Back");
-        System.out.print("Your choice: ");
+        yourChoiceMessage();
         int k = in.nextInt();
         switch (k) {
             case 1:
@@ -107,6 +113,7 @@ public class CLI {
     }
 
     private void loginByLogin() {
+        System.out.println();
         System.out.println("=== LOG IN BY LOGIN ===");
         System.out.print("Enter login: ");
         String login = in.next();
@@ -115,6 +122,7 @@ public class CLI {
         userID = userService.loginByLogin(login, password);
         if (userID != null) {
             positiveMessage("You are logged in!");
+            userMenu();
         } else {
             negativeMessage();
             loginMenu();
@@ -122,6 +130,7 @@ public class CLI {
     }
 
     private void loginByPhone() {
+        System.out.println();
         System.out.println("=== LOG IN BY PHONE ===");
         System.out.print("Enter login: ");
         String login = in.next();
@@ -142,13 +151,14 @@ public class CLI {
     }
 
     private void userMenu() {
+        System.out.println();
         System.out.println("=== USER MENU ===");
         System.out.println("1 : Create account");
         System.out.println("2 : Add money");
         System.out.println("3 : Transfer");
         System.out.println("4 : History");
         System.out.println("other : Log out");
-        System.out.print("Your choice: ");
+        yourChoiceMessage();
         int k = in.nextInt();
         switch (k) {
             case 1:
@@ -164,11 +174,13 @@ public class CLI {
     }
 
     private void createAccount() {
+        System.out.println();
         System.out.println("=== ACCOUNT CREATING ===");
         System.out.println("Select currency:");
         System.out.println("1 : RUB");
         System.out.println("2 : EUR");
         System.out.println("3 : USD");
+        yourChoiceMessage();
         CurrencyCode currencyCode = null;
         int k = in.nextInt();
         switch (k) {
@@ -194,17 +206,19 @@ public class CLI {
     }
 
     private void addMoney() {
+        System.out.println();
         System.out.println("=== MONEY ADDING ===");
-        System.out.println("Select account:");
+        System.out.println("Your accounts:");
         List<Account> accounts = accountService.getAccountByUser(userID);
         for (int i = 0; i < accounts.size(); i ++) {
             Account account = accounts.get(i);
             Integer index = i + 1;
             System.out.println(index + " : Currency code - " + account.getAccCode() + ", Money - " + account.getAmount());
         }
-        System.out.print("Your choice: ");
+        yourChoiceMessage();
         int k = in.nextInt();
         UUID accountId = accounts.get(k - 1).getId();
+        System.out.println();
         System.out.println("Amount of money to add:");
         BigDecimal money = in.nextBigDecimal();
         Account updatedAccount = accountService.updateAccountMoney(accountId, money, MoneyOperation.ADD);

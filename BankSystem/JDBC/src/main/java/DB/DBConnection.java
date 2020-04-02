@@ -15,9 +15,7 @@ public class DBConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement stmt = connection.prepareStatement("DROP DATABASE IF EXISTS bank");
-            stmt.execute();
-            stmt = connection.prepareStatement("CREATE DATABASE bank");
+            PreparedStatement stmt = connection.prepareStatement("CREATE DATABASE IF NOT EXISTS bank");
             stmt.execute();
             stmt = connection.prepareStatement("USE bank");
             stmt.execute();
@@ -41,7 +39,7 @@ public class DBConnection {
     }
 
     public static boolean createTables() {
-        String userTable = "CREATE TABLE user " +
+        String userTable = "CREATE TABLE IF NOT EXISTS user " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "login VARCHAR(100) NOT NULL, " +
                 "password VARCHAR(100) NOT NULL, " +
@@ -49,14 +47,14 @@ public class DBConnection {
                 "phone VARCHAR(100) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
-        String accountTable = "CREATE TABLE account " +
+        String accountTable = "CREATE TABLE IF NOT EXISTS account " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "client_id VARCHAR(100) NOT NULL, " +
                 "amount DECIMAL(65) NOT NULL, " +
                 "acc_code VARCHAR(3) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
-        String operationTable = "CREATE TABLE operation " +
+        String operationTable = "CREATE TABLE IF NOT EXISTS operation " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "date VARCHAR(100) NOT NULL, " +
                 "currency VARCHAR(3) NOT NULL, " +

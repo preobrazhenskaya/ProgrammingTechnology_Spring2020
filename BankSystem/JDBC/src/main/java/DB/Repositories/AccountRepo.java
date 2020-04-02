@@ -26,7 +26,6 @@ public class AccountRepo {
         st.setString(4, account.getAccCode().toString());
 
         st.execute();
-        st.close();
     }
 
     public List<Account> getAccountsByUser(UUID userId) throws SQLException {
@@ -37,7 +36,6 @@ public class AccountRepo {
         st.setString(1, userId.toString());
 
         ResultSet rs = st.executeQuery();
-        st.close();
 
         List<Account> result = new ArrayList<>();
         while(rs.next()) {
@@ -58,7 +56,6 @@ public class AccountRepo {
         st.setString(1, id.toString());
 
         ResultSet rs = st.executeQuery();
-        st.close();
 
         if(rs.next()) {
             String clientId = rs.getString("client_id");
@@ -79,6 +76,5 @@ public class AccountRepo {
         st.setString(2, account.getId().toString());
 
         st.executeUpdate();
-        st.close();
     }
 }
