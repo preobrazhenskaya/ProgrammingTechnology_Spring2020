@@ -1,5 +1,7 @@
 package Models;
 
+import Helpers.CurrencyCode;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -48,5 +50,9 @@ public class Account {
 
     public void setAccCode(CurrencyCode accCode) {
         this.accCode = accCode;
+    }
+
+    public void updateAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 }

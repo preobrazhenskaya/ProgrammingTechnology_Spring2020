@@ -12,37 +12,37 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public boolean createUser(String login, String password, String address, String phone) {
+    public UUID createUser(String login, String password, String address, String phone) {
         User user = new User(UUID.randomUUID(), login, password, address, phone);
         try {
             userRepo.addUser(user);
         } catch (Exception e) {
-            return false;
+            return null;
         }
-        return true;
+        return user.getId();
     }
 
-    public boolean loginByLogin(String login, String password) {
+    public UUID loginByLogin(String login, String password) {
         try {
             User user = userRepo.getUserByLogin(login);
             if (!(user.getPassword().equals(password))) {
-                return false;
+                return null;
             }
+            return user.getId();
         } catch (Exception e) {
-            return false;
+            return null;
         }
-        return true;
     }
 
-    public boolean loginByPhone(String phone, String password) {
+    public UUID loginByPhone(String phone, String password) {
         try {
             User user = userRepo.getUserByPhone(phone);
             if (!(user.getPassword().equals(password))) {
-                return false;
+                return null;
             }
+            return user.getId();
         } catch (Exception e) {
-            return false;
+            return null;
         }
-        return true;
     }
 }

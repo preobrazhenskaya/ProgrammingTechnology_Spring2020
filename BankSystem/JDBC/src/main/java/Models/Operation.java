@@ -1,5 +1,7 @@
 package Models;
 
+import Helpers.CurrencyCode;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 

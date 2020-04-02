@@ -1,4 +1,4 @@
-package Models;
+package Helpers;
 
 public enum CurrencyCode {
     RUB,
