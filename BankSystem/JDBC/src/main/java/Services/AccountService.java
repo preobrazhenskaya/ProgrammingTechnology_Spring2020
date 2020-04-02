@@ -1,6 +1,7 @@
 package Services;
 
 import DB.Repositories.AccountRepo;
+import Helpers.MoneyConvert;
 import Helpers.MoneyOperation;
 import Models.Account;
 import Helpers.CurrencyCode;
@@ -37,9 +38,12 @@ public class AccountService {
         return result;
     }
 
-    public Account updateAccountMoney(UUID id, BigDecimal money, MoneyOperation operation) {
+    public Account updateAccountMoney(UUID id, BigDecimal money, CurrencyCode currencyCode, MoneyOperation operation) {
         try {
             Account account = accountRepo.getAccountById(id);
+            if (currencyCode != account.getAccCode()) {
+                money = MoneyConvert.convert(currencyCode, account.getAccCode(), money);
+            }
             BigDecimal newAmount;
             if (operation == MoneyOperation.ADD) {
                 newAmount = account.getAmount().add(money);

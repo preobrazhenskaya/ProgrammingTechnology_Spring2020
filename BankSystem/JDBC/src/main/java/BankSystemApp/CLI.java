@@ -54,7 +54,7 @@ public class CLI {
         System.out.println("=== MAIN MENU ===");
         System.out.println("1 : Registration");
         System.out.println("2 : Log in");
-        System.out.println("other : exit");
+        System.out.println("other : Exit");
         yourChoiceMessage();
         int k = in.nextInt();
         switch (k) {
@@ -173,13 +173,12 @@ public class CLI {
         }
     }
 
-    private void createAccount() {
-        System.out.println();
-        System.out.println("=== ACCOUNT CREATING ===");
+    private CurrencyCode currencyCodeMenu() {
         System.out.println("Select currency:");
         System.out.println("1 : RUB");
         System.out.println("2 : EUR");
         System.out.println("3 : USD");
+        System.out.println("other : Back");
         yourChoiceMessage();
         CurrencyCode currencyCode = null;
         int k = in.nextInt();
@@ -194,9 +193,16 @@ public class CLI {
                 currencyCode = CurrencyCode.USD;
                 break;
             default:
-                createAccount();
+                userMenu();
                 break;
         }
+        return currencyCode;
+    }
+
+    private void createAccount() {
+        System.out.println();
+        System.out.println("=== ACCOUNT CREATING ===");
+        CurrencyCode currencyCode = currencyCodeMenu();
         if (accountService.createAccount(currencyCode, userID)) {
             positiveMessage("Account created!");
         } else {
@@ -221,7 +227,9 @@ public class CLI {
         System.out.println();
         System.out.println("Amount of money to add:");
         BigDecimal money = in.nextBigDecimal();
-        Account updatedAccount = accountService.updateAccountMoney(accountId, money, MoneyOperation.ADD);
+        System.out.println();
+        CurrencyCode currencyCode = currencyCodeMenu();
+        Account updatedAccount = accountService.updateAccountMoney(accountId, money, currencyCode, MoneyOperation.ADD);
         if (updatedAccount != null) {
             positiveMessage("Money added!");
             System.out.println("New account info:");
