@@ -7,19 +7,19 @@ import java.sql.SQLException;
 
 public class DBConnection {
     private static java.sql.Connection connection;
-    private static final String USER = "Yana";
-    private static final String PASSWORD = "yana12345";
-    private static final String URL = "jdbc:mysql://localhost:3306/BANK?useUnicode=yes&useSSL=false";
+    private static final String USER = "ssu";
+    private static final String PASSWORD = "ssu12345";
+    private static final String URL = "jdbc:mysql://localhost:3306/?useUnicode=yes&useSSL=false&createIfNotExists=true";
 
     public static boolean createConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement stmt = connection.prepareStatement("DROP DATABASE IF EXISTS BANK");
+            PreparedStatement stmt = connection.prepareStatement("DROP DATABASE IF EXISTS bank");
             stmt.execute();
-            stmt = connection.prepareStatement("CREATE DATABASE BANK");
+            stmt = connection.prepareStatement("CREATE DATABASE bank");
             stmt.execute();
-            stmt = connection.prepareStatement("USE BANK");
+            stmt = connection.prepareStatement("USE bank");
             stmt.execute();
             return true;
         } catch (ClassNotFoundException | SQLException e) {
@@ -52,7 +52,7 @@ public class DBConnection {
         String accountTable = "CREATE TABLE account " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "client_id VARCHAR(100) NOT NULL, " +
-                "amount DECIMAL(100) NOT NULL, " +
+                "amount DECIMAL(65) NOT NULL, " +
                 "acc_code VARCHAR(3) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
@@ -62,9 +62,9 @@ public class DBConnection {
                 "currency VARCHAR(3) NOT NULL, " +
                 "from_account VARCHAR(100) NOT NULL, " +
                 "to_account VARCHAR(100) NOT NULL, " +
-                "amount DECIMAL(100) NOT NULL, " +
-                "amount_before DECIMAL(100) NOT NULL, " +
-                "amount_after DECIMAL(100) NOT NULL, " +
+                "amount DECIMAL(65) NOT NULL, " +
+                "amount_before DECIMAL(65) NOT NULL, " +
+                "amount_after DECIMAL(65) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
         Connection con = DBConnection.getConnection();
