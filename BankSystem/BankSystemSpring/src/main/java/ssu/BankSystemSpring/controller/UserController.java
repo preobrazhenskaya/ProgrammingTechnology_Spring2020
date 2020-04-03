@@ -1,5 +1,6 @@
 package ssu.BankSystemSpring.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +35,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    @ApiOperation("User authorization")
     public ResponseEntity<?> signIn(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = jwtUserDetailsService
@@ -43,6 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
+    @ApiOperation("User registration")
     public Boolean signUp(@RequestBody User body) throws ValidationException {
         if (userService.existsUserByUsername(body.getUsername())) {
             throw new ValidationException("username already existed");

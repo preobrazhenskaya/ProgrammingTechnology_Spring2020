@@ -1,5 +1,6 @@
 package ssu.BankSystemSpring.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ public class AccountController {
     }
 
     @PostMapping("/create/{currency}")
+    @ApiOperation("Create account with provided currency")
     public boolean createAccount(@PathVariable("currency") String currency) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext()
@@ -37,6 +39,7 @@ public class AccountController {
     }
 
     @PostMapping("/add/{account-id}")
+    @ApiOperation("Add money to account")
     public boolean addMoney(@PathVariable("account-id") String accountId,
                             @RequestParam("currency") String currency,
                             @RequestParam("money") String money) {
@@ -55,6 +58,7 @@ public class AccountController {
     }
 
     @PostMapping("/transfer/{phone}")
+    @ApiOperation("Transfer money by phone")
     public boolean transfer(@PathVariable("phone") String phone,
                             @RequestParam("account") String accountId,
                             @RequestParam("money") String money) {
@@ -68,6 +72,7 @@ public class AccountController {
     }
 
     @GetMapping("/all")
+    @ApiOperation("Show all accounts by user")
     public List<Account> showAll() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext()

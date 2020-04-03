@@ -1,5 +1,6 @@
 package ssu.BankSystemSpring.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ public class OperationController {
     }
 
     @GetMapping("/history/{from_account}")
+    @ApiOperation("Show history by account")
     public List<Operation> getOperationByAccount(@PathVariable("from_account") String fromAccount) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext()
