@@ -1,8 +1,11 @@
 package ssu.BankSystemSpring.service;
 
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import ssu.BankSystemSpring.entity.User;
 import ssu.BankSystemSpring.repository.UserRepo;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -24,6 +27,10 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         return userRepo.findByUsername(username);
+    }
+
+    public List<User> getAllUsers() {
+        return Lists.newArrayList(userRepo.findAll());
     }
 
     public boolean existsUserByUsername(String username) {

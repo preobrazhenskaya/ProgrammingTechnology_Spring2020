@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import ssu.BankSystemSpring.service.JwtUserDetailsService;
 import ssu.BankSystemSpring.service.UserService;
 
 import javax.xml.bind.ValidationException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -64,5 +66,24 @@ public class UserController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+
+    @GetMapping("/all")
+    @ApiOperation("Show all users")
+    public ResponseEntity<List<User>> showUsers() {
+        List<User> result = userService.getAllUsers();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/info")
+    @ApiOperation("Show user info")
+    public ResponseEntity<User> userInfo() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userService.getUserByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
