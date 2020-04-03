@@ -2,6 +2,8 @@ package ssu.BankSystemSpring.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +27,12 @@ public class OperationController {
 
     @GetMapping("/history/{from_account}")
     @ApiOperation("Show history by account")
-    public List<Operation> getOperationByAccount(@PathVariable("from_account") String fromAccount) {
+    public ResponseEntity<List<Operation>> getOperationByAccount(@PathVariable("from_account") String fromAccount) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
         String username = userDetails.getUsername();
-        return operationService.getOperationByAccount(Long.valueOf(fromAccount));
+        return new ResponseEntity<>(operationService.getOperationByAccount(Long.valueOf(fromAccount)), HttpStatus.OK);
     }
 }

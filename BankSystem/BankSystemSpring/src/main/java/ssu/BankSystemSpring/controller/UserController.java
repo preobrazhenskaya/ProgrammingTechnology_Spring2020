@@ -2,6 +2,7 @@ package ssu.BankSystemSpring.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -46,13 +47,13 @@ public class UserController {
 
     @PostMapping("/signup")
     @ApiOperation("User registration")
-    public Boolean signUp(@RequestBody User body) throws ValidationException {
+    public ResponseEntity<User> signUp(@RequestBody User body) throws ValidationException {
         if (userService.existsUserByUsername(body.getUsername())) {
             throw new ValidationException("username already existed");
         }
         String encodedPassword = new BCryptPasswordEncoder().encode(body.getPassword());
-        userService.createUser(body.getUsername(), encodedPassword, body.getPhone(), body.getAddress());
-        return true;
+        User user = userService.createUser(body.getUsername(), encodedPassword, body.getPhone(), body.getAddress());
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     private void authenticate(String username, String password) throws Exception {

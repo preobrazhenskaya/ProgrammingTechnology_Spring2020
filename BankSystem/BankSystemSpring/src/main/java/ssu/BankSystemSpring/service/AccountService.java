@@ -22,10 +22,11 @@ public class AccountService {
         this.operationService = operationService;
     }
 
-    public void createAccount(String currencyCode, String username) {
+    public Account createAccount(String currencyCode, String username) {
         User user = userService.getUserByUsername(username);
         Account account = new Account(user.getId(), BigDecimal.valueOf(0), currencyCode);
         accountRepo.save(account);
+        return account;
     }
 
     public Account getAccountById(Long accountId) {

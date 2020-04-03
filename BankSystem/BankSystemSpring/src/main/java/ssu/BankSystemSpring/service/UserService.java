@@ -12,9 +12,10 @@ public class UserService {
         this.userRepo = userRepository;
     }
 
-    public void createUser(String username, String password, String phone, String address) {
+    public User createUser(String username, String password, String phone, String address) {
         User user = new User(username, password, phone, address);
         userRepo.save(user);
+        return user;
     }
 
     public User getUserByPhone(String phone) {
