@@ -45,4 +45,12 @@ public class UserService {
             return null;
         }
     }
+
+    public User getUserByPhone(String phone) {
+        try {
+            return userRepo.getUserByPhone(phone);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

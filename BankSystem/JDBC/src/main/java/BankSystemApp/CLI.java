@@ -2,11 +2,14 @@ package BankSystemApp;
 
 import DB.DBConnection;
 import DB.Repositories.AccountRepo;
+import DB.Repositories.OperationRepo;
 import DB.Repositories.UserRepo;
 import Helpers.CurrencyCode;
 import Helpers.MoneyOperation;
 import Models.Account;
+import Models.Operation;
 import Services.AccountService;
+import Services.OperationService;
 import Services.UserService;
 
 import java.math.BigDecimal;
@@ -19,6 +22,7 @@ public class CLI {
 
     private UserService userService;
     private AccountService accountService;
+    private OperationService operationService;
     private UUID userID;
 
     public void greeting() {
@@ -30,8 +34,10 @@ public class CLI {
     private void createHelpers() {
         UserRepo userRepo = new UserRepo();
         userService = new UserService(userRepo);
+        OperationRepo operationRepo = new OperationRepo();
+        operationService = new OperationService(operationRepo);
         AccountRepo accountRepo = new AccountRepo();
-        accountService = new AccountService(accountRepo);
+        accountService = new AccountService(accountRepo, userService, operationService);
     }
 
     private void positiveMessage(String message) {
@@ -167,8 +173,14 @@ public class CLI {
             case 2:
                 addMoney();
                 break;
+            case 3:
+                transfer();
+                break;
+            case 4:
+                showHistory();
+                break;
             default:
-
+                logOut();
                 break;
         }
     }
@@ -211,9 +223,7 @@ public class CLI {
         userMenu();
     }
 
-    private void addMoney() {
-        System.out.println();
-        System.out.println("=== MONEY ADDING ===");
+    private Account accountMenu() {
         System.out.println("Your accounts:");
         List<Account> accounts = accountService.getAccountByUser(userID);
         for (int i = 0; i < accounts.size(); i ++) {
@@ -223,20 +233,75 @@ public class CLI {
         }
         yourChoiceMessage();
         int k = in.nextInt();
-        UUID accountId = accounts.get(k - 1).getId();
+        return accounts.get(k - 1);
+    }
+
+    private void newAccountInfo(Account account) {
+        System.out.println("New account info:");
+        System.out.println("Currency code - " + account.getAccCode() + ", Money - " + account.getAmount());
+    }
+
+    private void addMoney() {
         System.out.println();
-        System.out.println("Amount of money to add:");
+        System.out.println("=== MONEY ADDING ===");
+        UUID accountId = accountMenu().getId();
+        System.out.println();
+        System.out.print("Amount of money to add: ");
         BigDecimal money = in.nextBigDecimal();
         System.out.println();
         CurrencyCode currencyCode = currencyCodeMenu();
         Account updatedAccount = accountService.updateAccountMoney(accountId, money, currencyCode, MoneyOperation.ADD);
         if (updatedAccount != null) {
             positiveMessage("Money added!");
-            System.out.println("New account info:");
-            System.out.println(k + " : Currency code - " + updatedAccount.getAccCode() + ", Money - " + updatedAccount.getAmount());
+            newAccountInfo(updatedAccount);
         } else {
             negativeMessage();
         }
         userMenu();
+    }
+
+    private void transfer() {
+        System.out.println();
+        System.out.println("=== TRANSFER ===");
+        Account accountFrom = accountMenu();
+        System.out.println();
+        System.out.print("Recipient's phone: ");
+        String phoneTo = in.next();
+        System.out.println();
+        System.out.print("Amount of money to transfer: ");
+        BigDecimal money = in.nextBigDecimal();
+        Account updatedAccount = accountService.transfer(accountFrom, phoneTo, money);
+        if (updatedAccount != null) {
+            positiveMessage("Money transferred!");
+            newAccountInfo(updatedAccount);
+        } else {
+            negativeMessage();
+        }
+        userMenu();
+    }
+
+    private void showHistory() {
+        System.out.println();
+        UUID accountId = accountMenu().getId();
+        System.out.println();
+        System.out.println("=== HISTORY ===");
+        List<Operation> history = operationService.getOperationByAccount(accountId);
+        for (Operation operation : history) {
+            System.out.println(operation.getId() + ":");
+            System.out.println("Date - " + operation.getDate());
+            System.out.println("Currency - " + operation.getCurrency());
+            System.out.println("From account - " + operation.getFromAccount());
+            System.out.println("To account - " + operation.getToAccount());
+            System.out.println("Amount - " + operation.getAmount());
+            System.out.println("Amount before - " + operation.getAmountBefore());
+            System.out.println("Amount after - " + operation.getAmountAfter());
+            System.out.println();
+        }
+        userMenu();
+    }
+
+    private void logOut() {
+        userID = null;
+        mainMenu();
     }
 }

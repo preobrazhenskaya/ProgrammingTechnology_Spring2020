@@ -5,17 +5,21 @@ import Helpers.MoneyConvert;
 import Helpers.MoneyOperation;
 import Models.Account;
 import Helpers.CurrencyCode;
+import Models.User;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class AccountService {
     private AccountRepo accountRepo;
+    private UserService userService;
+    private OperationService operationService;
 
-    public AccountService(AccountRepo accountRepo) {
+    public AccountService(AccountRepo accountRepo, UserService userService, OperationService operationService) {
         this.accountRepo = accountRepo;
+        this.userService = userService;
+        this.operationService = operationService;
     }
 
     public boolean createAccount(CurrencyCode currencyCode, UUID clientId) {
@@ -53,6 +57,22 @@ public class AccountService {
             account.updateAmount(newAmount);
             accountRepo.updateAccountAmount(account);
             return account;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Account transfer(Account accountFrom, String phoneTo, BigDecimal money) {
+        try {
+            User user = userService.getUserByPhone(phoneTo);
+            Account accountTo = getAccountByUser(user.getId()).get(0);
+            Account updateAccountFrom = updateAccountMoney(accountFrom.getId(), money, accountFrom.getAccCode(), MoneyOperation.REDUCE);
+            Account updateAccountTo = updateAccountMoney(accountTo.getId(), money, accountFrom.getAccCode(), MoneyOperation.ADD);
+            if (operationService.createOperation(accountTo.getAccCode(), accountFrom.getId(), accountTo.getId(), money, accountFrom.getAmount(), updateAccountFrom.getAmount())) {
+                return updateAccountFrom;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }

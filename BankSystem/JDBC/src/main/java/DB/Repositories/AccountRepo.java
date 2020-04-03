@@ -2,7 +2,6 @@ package DB.Repositories;
 
 import DB.DBConnection;
 import Helpers.CurrencyCodeHelper;
-import Helpers.MoneyOperation;
 import Models.Account;
 
 import java.math.BigDecimal;
@@ -40,9 +39,9 @@ public class AccountRepo {
         List<Account> result = new ArrayList<>();
         while(rs.next()) {
             String id = rs.getString("id");
-            String amount = rs.getString("amount");
+            BigDecimal amount = rs.getBigDecimal("amount");
             String accCode = rs.getString("acc_code");
-            Account account = new Account(UUID.fromString(id), userId, BigDecimal.valueOf(Integer.parseInt(amount)), CurrencyCodeHelper.convert(accCode));
+            Account account = new Account(UUID.fromString(id), userId, amount, CurrencyCodeHelper.convert(accCode));
             result.add(account);
         }
         return result;
@@ -59,9 +58,9 @@ public class AccountRepo {
 
         if(rs.next()) {
             String clientId = rs.getString("client_id");
-            String amount = rs.getString("amount");
+            BigDecimal amount = rs.getBigDecimal("amount");
             String accCode = rs.getString("acc_code");
-            return new Account(id, UUID.fromString(clientId), BigDecimal.valueOf(Integer.parseInt(amount)), CurrencyCodeHelper.convert(accCode));
+            return new Account(id, UUID.fromString(clientId), amount, CurrencyCodeHelper.convert(accCode));
         } else {
             return null;
         }

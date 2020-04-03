@@ -50,7 +50,7 @@ public class DBConnection {
         String accountTable = "CREATE TABLE IF NOT EXISTS account " +
                 "(id VARCHAR(100) NOT NULL, " +
                 "client_id VARCHAR(100) NOT NULL, " +
-                "amount DECIMAL(65) NOT NULL, " +
+                "amount Decimal NOT NULL, " +
                 "acc_code VARCHAR(3) NOT NULL, " +
                 "PRIMARY KEY (id))";
 
@@ -60,9 +60,9 @@ public class DBConnection {
                 "currency VARCHAR(3) NOT NULL, " +
                 "from_account VARCHAR(100) NOT NULL, " +
                 "to_account VARCHAR(100) NOT NULL, " +
-                "amount DECIMAL(65) NOT NULL, " +
-                "amount_before DECIMAL(65) NOT NULL, " +
-                "amount_after DECIMAL(65) NOT NULL, " +
+                "amount Decimal NOT NULL, " +
+                "amount_before Decimal NOT NULL, " +
+                "amount_after Decimal NOT NULL, " +
                 "PRIMARY KEY (id))";
 
         Connection con = DBConnection.getConnection();
