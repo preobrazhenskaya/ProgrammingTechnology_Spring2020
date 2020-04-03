@@ -17,21 +17,12 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public Long getUserIdByUsername(String username) {
-        User user = userRepo.findByUsername(username);
-        return user.getId();
-    }
-
     public User getUserByPhone(String phone) {
         return userRepo.findByPhone(phone);
     }
 
     public User getUserByUsername(String username) {
         return userRepo.findByUsername(username);
-    }
-
-    public boolean existsUserByPhone(String phone) {
-        return userRepo.existsUserByPhone(phone);
     }
 
     public boolean existsUserByUsername(String username) {

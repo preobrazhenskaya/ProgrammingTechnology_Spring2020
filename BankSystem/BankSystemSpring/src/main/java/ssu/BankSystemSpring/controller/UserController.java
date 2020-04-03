@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> signIn(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = jwtUserDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public Boolean create(@RequestBody User body) throws ValidationException {
+    public Boolean signUp(@RequestBody User body) throws ValidationException {
         if (userService.existsUserByUsername(body.getUsername())) {
             throw new ValidationException("username already existed");
         }
