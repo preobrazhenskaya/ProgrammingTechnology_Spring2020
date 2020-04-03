@@ -21,50 +21,6 @@ public class UserRepo {
         st.execute();
     }
 
-    public void deleteUser(User user) throws SQLException {
-        String query = "delete from user where id = ?";
-        Connection con = DBConnection.getConnection();
-        PreparedStatement st = con.prepareStatement(query);
-
-        st.setString(1, user.getId().toString());
-
-        st.executeUpdate();
-    }
-
-    public void updateUser(User user) throws SQLException {
-        String query = "update user set login = ?, password = ?, address = ?, phone = ? where id = ?";
-        Connection con = DBConnection.getConnection();
-        PreparedStatement st = con.prepareStatement(query);
-
-        st.setString(1, user.getLogin());
-        st.setString(2, user.getPassword());
-        st.setString(3, user.getAddress());
-        st.setString(4, user.getPhone());
-        st.setString(5, user.getId().toString());
-
-        st.executeUpdate();
-    }
-
-    public User getUserById(UUID id) throws SQLException {
-        String query = "select * from user where id = ?";
-        Connection con = DBConnection.getConnection();
-        PreparedStatement st = con.prepareStatement(query);
-
-        st.setString(1, id.toString());
-
-        ResultSet rs = st.executeQuery();
-
-        if(rs.next()) {
-            String login = rs.getString("login");
-            String password = rs.getString("password");
-            String address = rs.getString("address");
-            String phone = rs.getString("phone");
-            return new User(id, login, password, address, phone);
-        } else {
-            return null;
-        }
-    }
-
     public User getUserByLogin(String login) throws SQLException {
         String query = "select * from user where login = ?";
         Connection con = DBConnection.getConnection();
