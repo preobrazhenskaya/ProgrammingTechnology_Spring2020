@@ -28,4 +28,4 @@ target/
 *.md
 *.cmd
 mvnw
-*/.mvn/
+*.properties
